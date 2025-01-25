@@ -1,10 +1,10 @@
-import { TStudent } from "./student.interface";
+import { Student } from './student.model';
 
-const createStudentIntoDB = (payload: TStudent) =>{
-    
-  try {
-    
-  } catch (error) {
-    
-  }
-}
+const findAllStudentIntoDB = async () => {
+  const student = await Student.find();
+  return student;
+};
+
+export const StudentSevices = {
+  findAllStudentIntoDB,
+};

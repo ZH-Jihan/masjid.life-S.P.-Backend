@@ -25,4 +25,14 @@ const createDonar = asyncHandler(async (req, res) => {
   });
 });
 
-export { createDonar, createStudent };
+const tagStudentWithDonar = asyncHandler(async (req, res) => {
+  const { donarId, studentId } = req.body;
+  const result = await UserService.tagStudentWithDonarInDB(donarId, studentId);
+  new ApiResponse(res, {
+    statusCode: http.CREATED,
+    message: 'Student Tagged with Donar successfully',
+    data: result,
+  });
+});
+
+export { createDonar, createStudent, tagStudentWithDonar };

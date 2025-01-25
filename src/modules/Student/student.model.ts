@@ -9,6 +9,11 @@ const studentSchema = new Schema<TStudent>(
       ref: 'User',
       required: true,
     },
+    tagDonar: {
+      type: Schema.Types.ObjectId,
+      ref: 'Donar',
+      default: null,
+    },
     name: {
       type: String,
       required: true,

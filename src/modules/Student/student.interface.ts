@@ -16,6 +16,7 @@ type TGurantor = {
 export interface TStudent {
   id: string;
   user: Types.ObjectId;
+  tagDonar: Types.ObjectId;
   name: string;
   email: string;
   branchCode: string;

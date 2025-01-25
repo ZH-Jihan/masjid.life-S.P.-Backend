@@ -3,6 +3,7 @@ import { Types } from 'mongoose';
 export interface TDonar {
   id: string;
   user: Types.ObjectId;
+  tagStudent: Types.ObjectId;
   name: string;
   email: string;
   branchCode: string;

@@ -12,6 +12,11 @@ const donarSchema = new Schema<TDonar>({
     ref: 'User',
     required: true,
   },
+  tagStudent: {
+    type: Schema.Types.ObjectId,
+    ref: 'Student',
+    default: 'null',
+  },
   name: {
     type: String,
     required: true,

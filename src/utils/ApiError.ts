@@ -1,25 +1,13 @@
-import { Response } from 'express';
-
-type TResponse = {
-  statusCode: number;
-  message: string;
-  error?: any;
-  success?: boolean;
-};
-
 export class ApiError extends Error {
   statusCode: number;
-  error: any;
-  success: boolean;
 
-  constructor(
-    res: Response,
-    { statusCode, message, error, success }: TResponse,
-  ) {
+  constructor(statusCode: number, message: string, stack?: '') {
     super(message);
     this.statusCode = statusCode;
-    this.success = success || true;
-    this.error = error;
-    res.status(statusCode).json(this);
+    if (stack) {
+      this.stack = stack;
+    } else {
+      Error.captureStackTrace(this, this.constructor);
+    }
   }
 }

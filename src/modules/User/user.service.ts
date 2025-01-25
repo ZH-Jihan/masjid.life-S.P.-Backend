@@ -17,7 +17,7 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
     const userData: Partial<TUser> = {};
     // set all required fields for the new user
     userData.email = payload.email;
-    userData.role = 'Student';
+    userData.role = 'student';
     userData.id = await genareateStudentId();
     userData.password = password ? password : '12345678';
     // create a new user
@@ -58,7 +58,7 @@ const createDonartIntoDB = async (password: string, payload: TDonar) => {
     const userData: Partial<TUser> = {};
     // set all required fields for the new user
     userData.email = payload.email;
-    userData.role = 'Donar';
+    userData.role = 'donar';
     userData.id = await genareateDonarId();
     userData.password = password ? password : '12345678';
     // create a new user
@@ -89,7 +89,45 @@ const createDonartIntoDB = async (password: string, payload: TDonar) => {
   }
 };
 
+const tagStudentWithDonarInDB = async (donarId: string, studentId: string) => {
+  const session = await mongoose.startSession();
+  try {
+    session.startTransaction();
+    const tagStudentForDonar = await Donar.findByIdAndUpdate(
+      { _id: donarId },
+      {
+        tagStudent: studentId,
+      },
+      { new: true, session },
+    );
+
+    if (!tagStudentForDonar?.tagStudent) {
+      throw new Error('Tag student failed');
+    }
+
+    const tagDonarForStudent = await Student.findByIdAndUpdate(
+      { _id: studentId },
+      {
+        tagDonar: donarId,
+      },
+      { new: true, session },
+    );
+    if (!tagDonarForStudent?.tagDonar) {
+      throw new Error('Tag Donar failed');
+    }
+    await session.commitTransaction();
+    session.endSession();
+
+    return { tagStudentForDonar, tagDonarForStudent };
+  } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
+    throw error;
+  }
+};
+
 export const UserService = {
   createStudentIntoDB,
   createDonartIntoDB,
+  tagStudentWithDonarInDB,
 };
