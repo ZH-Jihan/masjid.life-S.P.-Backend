@@ -1,9 +1,8 @@
 export type TUser = {
-  name: String;
   email: String;
   id: String;
   password: String;
-  role: String;
-  status: Boolean;
+  role: 'Student' | 'Donar';
+  status: 'Active' | 'Deactivated';
   isDeleted: Boolean;
 };

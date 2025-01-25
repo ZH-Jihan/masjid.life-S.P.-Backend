@@ -2,6 +2,7 @@ import cors from 'cors';
 import express, { NextFunction, Request, Response } from 'express';
 import globalErrorHandler from './middlewares/globelErrorHandler';
 import notFoundRoutes from './middlewares/notFoundRoutes';
+import router from './routes';
 
 const app = express();
 app.use(express.json());
@@ -12,6 +13,7 @@ app.get('/', (req, res) => {
 });
 
 // Handle All Api Routes
+app.use('/api/v2', router);
 
 // Global Error Handler
 app.use(globalErrorHandler);

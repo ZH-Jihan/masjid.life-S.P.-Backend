@@ -1,4 +1,4 @@
-import { Types } from 'mongoose';
+import { Model, Types } from 'mongoose';
 
 type TNid = {
   front: string;
@@ -13,7 +13,7 @@ type TGurantor = {
   address: string;
 };
 
-export type TStudent = {
+export interface TStudent {
   id: string;
   user: Types.ObjectId;
   name: string;
@@ -25,5 +25,9 @@ export type TStudent = {
   nid: TNid;
   gurantor: TGurantor;
   isDeleted: boolean;
-  status: 'Active' | 'Deleted';
-};
+  status: 'Active' | 'Deactivated';
+}
+
+export interface TStudentModel extends Model<TStudent> {
+  isStudentExist(id: string): Promise<TStudent>;
+}

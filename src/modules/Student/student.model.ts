@@ -44,6 +44,7 @@ const studentSchema = new Schema<TStudent>(
   },
 );
 
+// check if the student has deleted and deactivated or not
 studentSchema.pre('find', function (next) {
   this.find({
     isDeleted: false,
@@ -51,6 +52,7 @@ studentSchema.pre('find', function (next) {
   });
   next();
 });
+
 studentSchema.pre('findOne', function (next) {
   this.findOne({
     isDeleted: false,
@@ -68,5 +70,12 @@ studentSchema.pre('aggregate', function (next) {
   });
   next();
 });
+
+// check if the student exist in the database or not
+studentSchema.statics.isStudentExist = async function (id: string) {
+  return await Student.findOne({
+    id,
+  });
+};
 
 export const Student = model<TStudent>('Student', studentSchema);

@@ -1,9 +1,15 @@
 import { ErrorRequestHandler } from 'express';
+import http from 'http-status-codes';
 
 const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
-  let statusCode = 500;
+  let statusCode = 400;
   let message = 'Something went wrong';
+  console.log(error);
 
+  if (error?.code === 11000) {
+    statusCode = http.NOT_ACCEPTABLE;
+    message = `${error?.keyValue.email} This User Already exists`;
+  }
   res.status(statusCode).json({
     success: false,
     message,
